@@ -1,0 +1,150 @@
+<form id="QuizWelliFa" method="POST">
+      
+    <!-- playing-area -->
+    <div class="playing-area">
+
+        <div id="myQuiz" ng-controller="QuizController">
+    
+            <div class="panel-group" id="quiz-group" role="tablist" aria-multiselectable="true">
+
+                <div class="panel close-{{activeQuestion}}" ng-repeat="question in quiz.questions">
+                    <div class="panel-heading" role="tab" id="question-header-{{activeQuestion}}" aria-hidden="true">
+                        <h4 class="panel-title">
+                            <a role="button" 
+                                ng-click="nextQuestion()">
+                                <span class="sr-clip">Question {{$index}}</span>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="question-{{activeQuestion}}" class="{{ ($index === activeQuestion) ? 'collapse in' : 'collapse' }}" role="tabpanel">
+                        
+                        <div class="panel-body traditional" style="height: 808px;">
+                            
+
+                            <div class="quiz-question">
+                                <img src="{{ quiz.questions[$index].icon }}" class="question-header-image header-image-2" alt="quiz-02">
+                                <h2 class="quiz-title"><p>{{ quiz.questions[$index].question }}</p></h2>
+
+                                <div class="responses">
+
+                                    <div class="form-group response-group-{{a.id}}" 
+                                         ng-repeat="a in quiz.questions[$index].answers">
+                                        <div class="radio">
+                                            <input class="responses-label" id="q1-the-why-its-for-a-cause-i-believe-in" name="q{{$parent.$index}}" type="radio" value="activist_100">
+                                            <div class="filler" aria-hidden="true"></div>
+                                            <label class="responses-label" for="q{{$parent.$index}}-the-why-its-for-a-cause-i-believe-in">
+                                                <span class="response-text">
+                                                    {{a.text}}{{$index}} | {{$parent.$index}}
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <!--.form-group-->
+
+<button class="btn btn-default" ng-click="nextStep()">Next</button>
+                                </div>
+                                <!-- .responses -->
+                            </div>
+                            <!-- .quiz-question -->
+                        </div>
+
+                    </div>
+
+
+
+
+            </div>
+  
+
+        </div>
+    </div>
+</form>  
+
+<div class="row">
+
+    <section class="col-xs-9">
+       
+        <!-- Gamq Over -->
+        <div class="start-quiz-prompt center-block" ng-if="quiz.over">
+            <h1>You are {{quiz.ponyName}}</h1>
+            <p class="lead text-center">
+                Would you like to play again?
+            </p>
+            <button class="btn btn-default btn-circle btn-xl" ng-click="quiz.restart()">Restart</button>
+
+            <button class="btn btn-default" ng-click="quiz.share()">Share</button>
+        </div>
+
+
+    </section> 
+    <section class="col-xs-3">
+
+            <!-- Actions -->
+            <div ng-class="action-bar" ng-if="quiz.started">
+                <div class="btn-group btn-groupd">
+                    
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-primary" 
+                            ng-click="quiz.nextQuestion()" 
+                                ng-disabled="!quiz.buttonNextEnabled">Next</button>
+                    </div>
+
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-warning" 
+                            ng-click="quiz.hit(true)" 
+                                ng-disabled="!quiz.buttonPrevEnabled">Prev</button>
+                    </div>
+
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-danger" 
+                            ng-click="quiz.restart()" 
+                                ng-disabled="!quiz.buttonRestartEnabled">Restart</button>
+                    </div>
+                </div>
+            </div>
+            <!--Actions-->
+
+
+
+
+            <p class="lead"><b>Quiz Model:</b> {{quiz.model}}</p>
+            <p class="lead"><b>Quiz Model q1:</b> {{quiz.model.q1}}</p>
+
+            <hr>
+
+            <div class="scoreboard" ng-if="quiz.started">
+                <p><b>Player Name:</b> {{quiz.player.name}}</p>
+                <p><b>Player</b> {{quiz.player}}</p>
+                <p><b>Quiz Model:</b> {{quiz.model}}</p>
+                <p><b>Question</b> {{quiz.question}}</p>
+                <p><b>Step</b> {{quiz.question}}</p>
+                <p><b>quiz Status:</b> {{quiz.started}}</p>
+                <p><b>quiz State:</b> {{quiz.state}}</p>
+                <p><b>Steps</b> {{quiz.steps}}</p>
+                <p><b>Active Question</b> {{activeQuestion}}</p>
+            </div>
+
+            <hr>
+
+            <div class="developer-bar">
+
+                <input id="setbtn" type="button" class="btn btn-default btn-sm" 
+                    value="set" 
+                    ng-click="myVar='my-class'">
+
+                <input id="clearbtn" type="button" class="btn btn-default btn-sm"
+                    value="clear" 
+                    ng-click="myVar=''">
+
+
+            
+            <button class="btn btn-default btn-sm" ng-click="quiz.animateQuestion()">Animate Question</button>
+                <button class="btn btn-default btn-sm" ng-click="quiz.init()">Init</button>
+                <button class="btn btn-default btn-sm" ng-click="quiz.start()">Start</button>
+                <button class="btn btn-default btn-sm" ng-click="quiz.reset()">Reset</button>
+                <button class="btn btn-default btn-sm" ng-click="quiz.end()">End</button>
+                <button class="btn btn-default btn-sm" ng-click="gotoBottom()">Scroll to Bottom</button>
+            </div>
+            
+        </section>
+</div>
