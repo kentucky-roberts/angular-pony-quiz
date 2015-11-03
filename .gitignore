@@ -12,11 +12,11 @@ obj
 node_modules
 /modular/client/build
 /modular/build
-bower_components
+#bower_components
 **/test/coverage
 /reports
 
-src/bower_components/*
+#src/bower_components/*
 
 .DS_Store
 .sass-cache
