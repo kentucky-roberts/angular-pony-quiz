@@ -1,9 +1,53 @@
-<form id="QuizWelliFa" method="POST">
+<form id="QuizWelliFa" ng-submit="submit()" ng-controller="QuizController">
       
     <!-- playing-area -->
     <div class="playing-area">
 
-        <div id="myQuiz" ng-controller="QuizController">
+        <div id="myQuiz">
+
+
+        <div class="panel-group">
+            <div class="panel close-{{activeQuestion -1}}">
+
+
+                
+
+                <div id="question-{{activeQuestion}}" class="{{ (activeQuestion === -1) ? 'collapse in' : 'collapse' }}" role="tabpanel">
+
+                    <div class="panel-body traditional" style="height: 808px;">
+
+
+                    
+
+
+
+                        <div class="quiz-question">
+                            <h2 class="quiz-title"><p>Which Wells Fargo pony are you?</p></h2>
+                            <div class="responses">
+                                <div class="form-group response-group-0">
+                                    <div class="radio">
+                                        <input class="js-input response-0" id="q0-ok-lets-do-it" name="q0" ng-click="begin()" type="radio" value="creative_0">
+                                        <div class="filler" aria-hidden="true"></div>
+                                        <label class="responses-label" for="q0-ok-lets-do-it">
+                                            <span class="response-text">OK. Let's do it!</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <!--.form-group-->
+                            </div>
+                            <!-- .responses -->
+                        </div>
+                        <!-- .quiz-question -->
+
+
+
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
     
             <div class="panel-group" id="quiz-group" role="tablist" aria-multiselectable="true">
 
@@ -20,28 +64,57 @@
                         
                         <div class="panel-body traditional" style="height: 808px;">
                             
-
+{{list}}
                             <div class="quiz-question">
                                 <img src="{{ quiz.questions[$index].icon }}" class="question-header-image header-image-2" alt="quiz-02">
                                 <h2 class="quiz-title"><p>{{ quiz.questions[$index].question }}</p></h2>
 
+
+<p>{{master |json}}</p>
+<pre>{{quiz.model}}</pre>
+
                                 <div class="responses">
+
+
 
                                     <div class="form-group response-group-{{a.id}}" 
                                          ng-repeat="a in quiz.questions[$index].answers">
-                                        <div class="radio">
-                                            <input class="responses-label" id="q1-the-why-its-for-a-cause-i-believe-in" name="q{{$parent.$index}}" type="radio" value="activist_100">
+
+<div class="btn-group">
+        <label class="btn btn-quiz" ng-model="quiz.model" ng-click="selectAnswer(a.text)" uib-btn-radio="'{{a.text}}'">{{a.text}}</label>
+        
+    </div>
+
+
+<!--
+                                         <div class="btn btn-primary" ng-click="update(a)">{{ a.text }}</div>-->
+
+
+<!--
+                                        <div class="radio" ng-click="nextStep()">
+                                            <input class="responses-label" 
+                                              id="q{{$parent.$index}}{{$index}}" 
+                                                name="q{{$parent.$index}}" 
+                                                  ng-model="text"
+                                                    type="radio" value="activist_100">
+                                            
                                             <div class="filler" aria-hidden="true"></div>
+                                            
                                             <label class="responses-label" for="q{{$parent.$index}}-the-why-its-for-a-cause-i-believe-in">
                                                 <span class="response-text">
                                                     {{a.text}}{{$index}} | {{$parent.$index}}
                                                 </span>
                                             </label>
                                         </div>
+-->
+
+
                                     </div>
                                     <!--.form-group-->
+                                <button class="btn btn-success" type="submit">Submit</button>
+                                <button class="btn btn-default" ng-click="nextStep()">Next</button>
+                                <button class="btn btn-default" ng-click="firstStep()">First</button>
 
-<button class="btn btn-default" ng-click="nextStep()">Next</button>
                                 </div>
                                 <!-- .responses -->
                             </div>
@@ -107,6 +180,7 @@
 
 
 
+            <p class="lead"><b>formData:</b> {{formData}}</p>
             <p class="lead"><b>Quiz Model:</b> {{quiz.model}}</p>
             <p class="lead"><b>Quiz Model q1:</b> {{quiz.model.q1}}</p>
 

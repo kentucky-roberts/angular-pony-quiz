@@ -12,7 +12,8 @@
 (function() {
     'use strict';
     angular.module('app.core', [
-        'ngAnimate'
+        'ngAnimate',
+        'ui.bootstrap'
     ]);
 })();
 
@@ -73,19 +74,27 @@ angular
 
         quiz.activeQuestion = -1;
         $scope.activeQuestion = -1;
-
+        $scope.formData = {};
         quiz.model = {};
 
         $scope.begin = function() {
+            quiz.start();
             $scope.activeQuestion++;
+            console.log("begin just returned ");
+
         };
 
         $scope.nextStep = function() {
+            console.log("Next Step called ... ");
             $scope.activeQuestion++;
         };
 
         $scope.lastStep = function() {
             $scope.activeQuestion--;
+        };
+
+        $scope.firstStep = function() {
+            $scope.activeQuestion = 0;
         };
 
         
@@ -95,10 +104,12 @@ angular
         $http.get('api/quiz.json').then(function(quizData){
             quiz.questions = quizData.data;
             quiz.totalQuestions = quiz.questions.length;
+
         });
 
 
         $scope.questions = q;
+        //console.log(quiz.questions);
 
 
 
@@ -112,20 +123,59 @@ angular
             quiz.model = {};
             quiz.state = "Running quiz.init function";
             console.log("quiz Ran Init");
-            $scope.activeQuestion = 0;
+            $scope.activeQuestion = -1;
         };
  
         quiz.start = function () {
-            console.log("game.start() was just called..");
+            console.log("quiz.start() was just called..");
             quiz.updateButtons(true, true, true);
             quiz.started = true;
             quiz.over = false;
+            //quiz.question = quiz.questions[0];
+            quiz.model = {stat: "started..."};
             quiz.step = 0;
-            quiz.question = quiz.questions[0];
-
-
-
+            //return quiz.step;
         }
+        
+        quiz.selectAnswer = function (a) {
+            quiz.answer = a;
+            console.log("quiz.selectAnswer() was just called..");
+            quiz.updateButtons(true, true, true);
+            quiz.started = true;
+            quiz.over = false;
+            //quiz.question = quiz.questions[0];
+            
+            
+          
+                 quiz.model += quiz.answer;
+                 console.log(quiz.model);
+                 //console.log(this.activeQuestion);
+                var addq = this.activeQuestion += 1;
+                console.log(addq);
+
+                if (quiz.model.length === quiz.totalQuestions) {
+                    alert("The quiz is over!");
+                }
+
+            
+        }
+
+
+        $scope.selectAnswer = function (a) {
+            
+            console.log("selectAnswer() was just called..");
+       
+            $scope.activeQuestion += 1;
+            quiz.selectAnswer(a);
+            
+    
+          
+                
+            
+        }
+
+
+        $scope.activeStep = quiz.step;
 
         quiz.begin = function() {
             console.log("game.begin() was just called...");
@@ -138,9 +188,58 @@ angular
             console.log(quiz.activeQuestion);
         }
 
-        quiz.animateQuestion = function () {
 
-        }
+        $scope.master = {};
+        
+        $scope.master = [];
+            $scope.update = function(a) {
+            $scope.master = angular.extend($scope.master, a);
+            
+
+            $scope.list = [];
+              $scope.text = 'hello';
+              $scope.submit = function() {
+                if ($scope.text) {
+                  $scope.list.push(this.text);
+                  $scope.text = '';
+                }
+              };
+
+
+
+        
+        };
+
+
+
+
+
+
+  $scope.checkModel = {
+    left: false,
+    middle: true,
+    right: false
+  };
+
+  $scope.checkResults = [];
+
+  $scope.$watchCollection('checkModel', function () {
+    $scope.checkResults = [];
+    angular.forEach($scope.checkModel, function (value, key) {
+      if (value) {
+        $scope.checkResults.push(key);
+      }
+    });
+  });
+
+
+
+        $scope.reset = function() {
+        $scope.a = angular.copy($scope.master);
+        };
+
+        $scope.reset();
+
 
 
         quiz.questionSteps = function() {
