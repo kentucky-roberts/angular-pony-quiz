@@ -1,3 +1,9 @@
+
+
+
+
+
+
 <form id="QuizWelliFa" ng-submit="submit()" ng-controller="QuizController">
       
     <!-- playing-area -->
@@ -64,24 +70,24 @@
                         
                         <div class="panel-body traditional" style="height: 808px;">
                             
-{{list}}
+
                             <div class="quiz-question">
                                 <img src="{{ quiz.questions[$index].icon }}" class="question-header-image header-image-2" alt="quiz-02">
                                 <h2 class="quiz-title"><p>{{ quiz.questions[$index].question }}</p></h2>
-
-
-<p>{{master |json}}</p>
-<pre>{{quiz.model}}</pre>
+<p>{{formData}} </p>
+<p>{{formResults}}</p>
 
                                 <div class="responses">
 
 
 
                                     <div class="form-group response-group-{{a.id}}" 
-                                         ng-repeat="a in quiz.questions[$index].answers">
+                                         ng-repeat="a in quiz.questions[$index].answers track by $id(a)">
 
 <div class="btn-group">
-        <label class="btn btn-quiz" ng-model="quiz.model" ng-click="selectAnswer(a.text)" uib-btn-radio="'{{a.text}}'">{{a.text}}</label>
+        <label class="btn btn-quiz" ng-model="formData" name="q{{$parent.$index}}" ng-click="addFormData($event)"
+         data="{{a.text}}"
+        uib-btn-radio="'{{a.text}}'">{{a.text}}</label>
         
     </div>
 
@@ -111,7 +117,7 @@
 
                                     </div>
                                     <!--.form-group-->
-                                <button class="btn btn-success" type="submit">Submit</button>
+                                <button class="btn btn-success" id="submit" type="submit">Submit</button>
                                 <button class="btn btn-default" ng-click="nextStep()">Next</button>
                                 <button class="btn btn-default" ng-click="firstStep()">First</button>
 
@@ -219,6 +225,15 @@
                 <button class="btn btn-default btn-sm" ng-click="quiz.end()">End</button>
                 <button class="btn btn-default btn-sm" ng-click="gotoBottom()">Scroll to Bottom</button>
             </div>
+
+
+
+
+
+
+
+
+
             
         </section>
 </div>

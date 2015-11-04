@@ -55,6 +55,7 @@
 angular
     .module('app.quiz')
     .controller('QuizController', QuizController);
+    
 
    
     QuizController.$inject = ['$scope','$timeout', '$http', '$location', '$anchorScroll', 'PlayerService'];
@@ -75,7 +76,8 @@ angular
         quiz.activeQuestion = -1;
         $scope.activeQuestion = -1;
         $scope.formData = {};
-        quiz.model = {};
+        $scope.quiz.model = {};
+
 
         $scope.begin = function() {
             quiz.start();
@@ -96,6 +98,12 @@ angular
         $scope.firstStep = function() {
             $scope.activeQuestion = 0;
         };
+
+        $scope.resetForm = function() {
+            $scope.activeQuestion = 0;
+            $scope.formData = {};
+        };
+        
 
         
    
@@ -120,7 +128,7 @@ angular
             quiz.player = PlayerService.newPlayer('Ringo', 150);
             quiz.ponyName = "";
             quiz.questions = [];
-            quiz.model = {};
+            quiz.model = {stat: "model init..."};
             quiz.state = "Running quiz.init function";
             console.log("quiz Ran Init");
             $scope.activeQuestion = -1;
@@ -132,12 +140,12 @@ angular
             quiz.started = true;
             quiz.over = false;
             //quiz.question = quiz.questions[0];
-            quiz.model = {stat: "started..."};
+            quiz.model = {stat: "...started..."};
             quiz.step = 0;
             //return quiz.step;
         }
         
-        quiz.selectAnswer = function (a) {
+        quiz.selectAnswer = function (a, $scope) {
             quiz.answer = a;
             console.log("quiz.selectAnswer() was just called..");
             quiz.updateButtons(true, true, true);
@@ -145,10 +153,15 @@ angular
             quiz.over = false;
             //quiz.question = quiz.questions[0];
             
-            
+                
           
                  quiz.model += quiz.answer;
+                 
                  console.log(quiz.model);
+
+
+
+
                  //console.log(this.activeQuestion);
                 var addq = this.activeQuestion += 1;
                 console.log(addq);
@@ -166,16 +179,41 @@ angular
             console.log("selectAnswer() was just called..");
        
             $scope.activeQuestion += 1;
-            quiz.selectAnswer(a);
+            $scope.formData.push(quiz.form);
             
-    
-          
-                
+            quiz.selectAnswer(a);
             
         }
 
+        $scope.formData = {};
+
+        $scope.formData = [];
+          
+          
+          $scope.addFormData = function(formData) {
+            
+            $scope.formData += formData.target.attributes.data.value;
+            //formData.push(formData);
+            $scope.activeQuestion += 1;
+
+          };
+
+
+          $scope.removeFormData = function(index) {
+            formData.splice(index, 1);
+          };
+
+
+
+
 
         $scope.activeStep = quiz.step;
+
+
+
+
+
+
 
         quiz.begin = function() {
             console.log("game.begin() was just called...");
@@ -191,45 +229,21 @@ angular
 
         $scope.master = {};
         
-        $scope.master = [];
-            $scope.update = function(a) {
-            $scope.master = angular.extend($scope.master, a);
-            
-
-            $scope.list = [];
-              $scope.text = 'hello';
-              $scope.submit = function() {
-                if ($scope.text) {
-                  $scope.list.push(this.text);
-                  $scope.text = '';
-                }
-              };
-
-
-
         
-        };
 
 
 
+  $scope.formResults = [];
 
-
-
-  $scope.checkModel = {
-    left: false,
-    middle: true,
-    right: false
-  };
-
-  $scope.checkResults = [];
-
-  $scope.$watchCollection('checkModel', function () {
-    $scope.checkResults = [];
-    angular.forEach($scope.checkModel, function (value, key) {
+  $scope.$watchCollection('formData.answers', function () {
+    $scope.formResults = [];
+    
+    angular.forEach($scope.formData, function (value, key) {
       if (value) {
-        $scope.checkResults.push(key);
+        $scope.formResults.push(key);
       }
     });
+
   });
 
 
@@ -300,6 +314,29 @@ angular
 
 
 })();
+
+
+(function() {
+    'use strict';
+
+    angular
+        .module('app.quiz')
+        .controller('ParentController', ParentController);
+
+    ParentController.$inject = ['$scope'];
+
+    /* @ngInject */
+    function ParentController($scope) {
+        $scope.logThisAndScope = function() {
+            console.log(this, $scope)
+        }
+    }
+
+})();
+
+
+
+
 
 (function(){
     'use strict';
