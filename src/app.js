@@ -55,7 +55,7 @@
 angular
     .module('app.quiz')
     .controller('QuizController', QuizController);
-    
+
 
    
     QuizController.$inject = ['$scope','$timeout', '$http', '$location', '$anchorScroll', 'PlayerService'];
@@ -64,6 +64,10 @@ angular
         
         var quiz = this;
         
+
+
+
+
         $scope.gotoBottom = function() {
           // set the location.hash to the id of
           // the element you wish to scroll to.
@@ -88,7 +92,10 @@ angular
 
         $scope.nextStep = function() {
             console.log("Next Step called ... ");
+            
+
             $scope.activeQuestion++;
+$( "animated " ).addClass( "bounceOutUp" );
         };
 
         $scope.lastStep = function() {
@@ -357,7 +364,6 @@ angular
 
 
 
-
 (function(){
     'use strict';
  
@@ -415,7 +421,6 @@ angular
 
 
         $http.get('api/quiz.json').then(function(quizData){
-            quiz.questions = quizData.data;
             quiz.questions = quizData.data;
             quiz.totalQuestions = quiz.questions.length;
         });
